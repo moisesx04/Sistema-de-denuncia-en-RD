@@ -38,7 +38,7 @@ const ReportList = ({ reports, onUpdate, showNotification }) => {
       {reports.map((report) => (
         <div key={report._id} className="glass-card animate-fade" style={{ padding: '0', overflow: 'hidden' }}>
           <img 
-            src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${report.imageUrl}`} 
+            src={report.imageUrl.startsWith('data:') ? report.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${report.imageUrl}`} 
             alt="Report" 
             style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
           />

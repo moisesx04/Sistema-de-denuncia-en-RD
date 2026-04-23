@@ -21,21 +21,19 @@ exports.createReport = async (req, res) => {
 
         if (req.file) {
             try {
-                const fileName = `comp-${Date.now()}.webp`;
-                const outputPath = path.join(__dirname, '../uploads/', fileName);
+                // Compress image buffer directly using sharp
+                const compressedBuffer = await sharp(req.file.buffer)
+                    .resize(800, null, { withoutEnlargement: true })
+                    .webp({ quality: 60 }) // Lower quality for base64 storage efficiency
+                    .toBuffer();
                 
-                // Compress image using sharp
-                await sharp(req.file.path)
-                    .resize(1000, null, { withoutEnlargement: true }) // Resize to 1000px max
-                    .webp({ quality: 75 }) // Convert to webp
-                    .toFile(outputPath);
-                
-                // Delete original file
-                fs.unlinkSync(req.file.path);
-                imageUrl = `/uploads/${fileName}`;
+                // Convert buffer to base64 string
+                const base64Image = compressedBuffer.toString('base64');
+                imageUrl = `data:image/webp;base64,${base64Image}`;
             } catch (sharpError) {
-                console.error("Sharp compression failed, using original file:", sharpError);
-                imageUrl = `/uploads/${req.file.filename}`;
+                console.error("Sharp compression failed, using original buffer:", sharpError);
+                const base64Image = req.file.buffer.toString('base64');
+                imageUrl = `data:${req.file.mimetype};base64,${base64Image}`;
             }
         }
 

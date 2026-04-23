@@ -93,7 +93,7 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
               <Popup>
                 <div style={{ minWidth: '220px', color: '#1e293b' }}>
                   <img 
-                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${report.imageUrl}`} 
+                    src={report.imageUrl.startsWith('data:') ? report.imageUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${report.imageUrl}`} 
                     alt="Report" 
                     style={{ width: '100%', borderRadius: '12px', marginBottom: '10px', height: '120px', objectFit: 'cover' }} 
                     onError={(e) => e.target.src = 'https://via.placeholder.com/200x120?text=Evidencia'}

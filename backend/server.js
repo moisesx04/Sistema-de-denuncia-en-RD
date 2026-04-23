@@ -22,7 +22,11 @@ mongoose.connect(mongoURI || 'mongodb://localhost:27017/luzrd')
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all for now to debug, then we can restrict
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
