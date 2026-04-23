@@ -20,19 +20,23 @@ exports.createReport = async (req, res) => {
         let imageUrl = null;
 
         if (req.file) {
-            const fileName = `comp-${Date.now()}.webp`;
-            const outputPath = path.join(__dirname, '../uploads/', fileName);
-            
-            // Compress image using sharp
-            await sharp(req.file.path)
-                .resize(800) // Resize to 800px width (maintaining aspect ratio)
-                .webp({ quality: 80 }) // Convert to webp with 80% quality
-                .toFile(outputPath);
-            
-            // Delete original file
-            fs.unlinkSync(req.file.path);
-            
-            imageUrl = `/uploads/${fileName}`;
+            try {
+                const fileName = `comp-${Date.now()}.webp`;
+                const outputPath = path.join(__dirname, '../uploads/', fileName);
+                
+                // Compress image using sharp
+                await sharp(req.file.path)
+                    .resize(1000, null, { withoutEnlargement: true }) // Resize to 1000px max
+                    .webp({ quality: 75 }) // Convert to webp
+                    .toFile(outputPath);
+                
+                // Delete original file
+                fs.unlinkSync(req.file.path);
+                imageUrl = `/uploads/${fileName}`;
+            } catch (sharpError) {
+                console.error("Sharp compression failed, using original file:", sharpError);
+                imageUrl = `/uploads/${req.file.filename}`;
+            }
         }
 
         const newReport = new Report({
