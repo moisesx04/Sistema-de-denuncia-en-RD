@@ -175,6 +175,17 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ef4444' }}></div> Basura</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '5px', borderTop: '1px solid #e2e8f0', paddingTop: '5px' }}><div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#10b981' }}></div> Resuelto</div>
       </div>
+
+      {/* Credits Label */}
+      <div style={{
+        position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)',
+        zIndex: 1000, background: 'rgba(15, 23, 42, 0.8)', color: 'white',
+        padding: '5px 15px', borderRadius: '20px', fontSize: '0.65rem', fontWeight: 800,
+        backdropFilter: 'blur(5px)', textTransform: 'uppercase', letterSpacing: '1px',
+        pointerEvents: 'none', border: '1px solid rgba(255,255,255,0.1)'
+      }}>
+        Desarrollado por el Sr. Moises Cuevas
+      </div>
     </div>
   );
 };
