@@ -206,6 +206,45 @@ function App() {
         </div>
       </main>
 
+      {/* Footer Premium */}
+      <footer style={{ 
+        marginTop: '2rem', 
+        padding: '3rem 1.5rem', 
+        textAlign: 'center', 
+        background: '#f8fafc',
+        borderTop: '1px solid #e2e8f0'
+      }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+          <p style={{ 
+            fontSize: '0.9rem', 
+            fontWeight: 800, 
+            color: '#1e293b',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            marginBottom: '0.5rem'
+          }}>
+            Desarrollado con Excelencia por Moises Cuevas
+          </p>
+          <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.5rem' }}>
+            Innovación y Monitoreo Ciudadano para la República Dominicana
+          </p>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: '1.5rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid #cbd5e1',
+            fontSize: '0.7rem',
+            color: '#94a3b8',
+            fontWeight: 600
+          }}>
+            <span>&copy; {new Date().getFullYear()} RD REPORTES</span>
+            <span>•</span>
+            <span>SISTEMA DE DENUNCIA URBANA</span>
+          </div>
+        </div>
+      </footer>
+
       {/* Modal Form */}
       {showForm && (
         <div style={{
