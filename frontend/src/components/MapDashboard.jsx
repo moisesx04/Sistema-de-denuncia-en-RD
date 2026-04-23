@@ -121,7 +121,7 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
       {/* Floating Action Card (Bottom Right Version) */}
       {clickedPos && (
         <div className="animate-fade dashboard-floating-card" style={{
-          position: 'absolute', bottom: '20px', right: '20px', zIndex: 1000,
+          position: 'absolute', bottom: '20px', left: '20px', zIndex: 1001,
           background: 'white', padding: '1.2rem', borderRadius: '24px',
           border: '1px solid var(--border-ui)', boxShadow: '0 15px 40px rgba(0,0,0,0.15)',
           display: 'flex', flexDirection: 'column', gap: '1rem', width: 'calc(100% - 40px)', maxWidth: '320px'
@@ -157,7 +157,7 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
 
       {/* Legend (Bottom Left) */}
       <div className="map-legend" style={{
-        position: 'absolute', top: '20px', left: '20px', zIndex: 1000,
+        position: 'absolute', bottom: '20px', right: '20px', zIndex: 1000,
         background: 'rgba(255,255,255,0.95)', padding: '12px 18px', borderRadius: '20px',
         border: '1px solid var(--border-ui)', backdropFilter: 'blur(10px)',
         display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.75rem', fontWeight: 700,
