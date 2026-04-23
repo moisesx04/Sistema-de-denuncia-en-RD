@@ -63,11 +63,12 @@ function App() {
 
       {/* Modern Sidebar / Navbar */}
       <nav style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '0.8rem 2.5rem', background: '#ffffff',
+        background: '#ffffff',
         borderBottom: '1px solid var(--border-ui)',
-        position: 'sticky', top: 0, zIndex: 1000
+        position: 'sticky', top: 0, zIndex: 1000,
+        padding: '0.6rem 0'
       }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
             width: '42px', height: '42px', borderRadius: '12px',
@@ -111,11 +112,12 @@ function App() {
         </div>
 
         <button className="btn-primary" onClick={() => { setPrefilledLocation(null); setShowForm(true); }}>
-          <Plus size={20} /> Nuevo Reporte
+          <Plus size={20} /> <span className="hide-mobile">Nuevo Reporte</span>
         </button>
+        </div>
       </nav>
 
-      <main style={{ padding: '2rem 3rem', maxWidth: '1600px', margin: '0 auto' }}>
+      <main style={{ padding: '2.5rem 1.5rem', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         
         {/* Dashboard Tab */}
         {activeTab === 'dashboard' && (
