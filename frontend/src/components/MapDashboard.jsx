@@ -14,6 +14,12 @@ function MapEventsHandler({ onMapClick }) {
     const handleClick = (e) => {
       onMapClick([e.latlng.lat, e.latlng.lng]);
     };
+    
+    // Fix for grey areas in map
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 400);
+
     map.on('click', handleClick);
     return () => map.off('click', handleClick);
   }, [map, onMapClick]);
