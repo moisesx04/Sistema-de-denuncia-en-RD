@@ -51,7 +51,7 @@ function LocationSearchBar({ onLocationFound }) {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
       {/* Input row */}
       <div style={{
         display: 'flex', alignItems: 'center',
@@ -167,7 +167,7 @@ function App() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', overflowX: 'hidden' }}>
 
       {/* ── Toast notification ── */}
       {notification && (
@@ -194,9 +194,9 @@ function App() {
 
         <div style={{
           maxWidth: '1200px', margin: '0 auto',
-          padding: '0 1.5rem', display: 'flex',
+          padding: '0 1rem', display: 'flex',
           justifyContent: 'space-between', alignItems: 'center',
-          height: '64px',
+          height: '64px', minWidth: 0,
         }}>
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -332,7 +332,7 @@ function App() {
           </header>
 
           {/* ── SEARCH BAR — outside the map ── */}
-          <div style={{ marginBottom: '1rem' }}>
+          <div className="search-wrapper" style={{ marginBottom: '1rem', width: '100%', minWidth: 0 }}>
             <LocationSearchBar onLocationFound={(coords) => setFlyTarget(coords)} />
           </div>
 
