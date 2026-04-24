@@ -13,20 +13,22 @@ const SearchField = () => {
   const map = useMap();
   
   useEffect(() => {
+    // Photon geocoder is usually better for fuzzy business search than Nominatim
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: false,
-      placeholder: 'Buscar negocio o dirección...',
+      placeholder: 'Ej: Mega Centro, Sambil...',
       errorMessage: 'No se encontró el lugar.',
-      geocoder: L.Control.Geocoder.nominatim({
+      geocoder: L.Control.Geocoder.photon({
         geocodingQueryParams: {
-          countrycodes: 'do', // Focus on Dominican Republic
-          limit: 5
+          // Approximate bounding box for Dominican Republic to prioritize local results
+          location: [18.7357, -70.1627], 
+          limit: 8
         }
       })
     })
       .on('markgeocode', function(e) {
         const latlng = e.geocode.center;
-        map.setView(latlng, 17); // Closer zoom for specific businesses
+        map.setView(latlng, 17);
       })
       .addTo(map);
 
