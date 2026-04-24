@@ -15,12 +15,18 @@ const SearchField = () => {
   useEffect(() => {
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: false,
-      placeholder: 'Buscar dirección...',
-      errorMessage: 'No se encontró el lugar.'
+      placeholder: 'Buscar negocio o dirección...',
+      errorMessage: 'No se encontró el lugar.',
+      geocoder: L.Control.Geocoder.nominatim({
+        geocodingQueryParams: {
+          countrycodes: 'do', // Focus on Dominican Republic
+          limit: 5
+        }
+      })
     })
       .on('markgeocode', function(e) {
         const latlng = e.geocode.center;
-        map.setView(latlng, 16);
+        map.setView(latlng, 17); // Closer zoom for specific businesses
       })
       .addTo(map);
 
