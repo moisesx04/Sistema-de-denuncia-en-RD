@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
-import 'leaflet-control-geocoder';
-import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Trash2, Search } from 'lucide-react';
+
+// Esri Geocoder
+import * as Esri from 'esri-leaflet-geocoder';
+import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
+
+import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Trash2, Search, MapPin } from 'lucide-react';
 
 // Standard Leaflet Assets
 import 'leaflet/dist/leaflet.css';
@@ -13,21 +16,29 @@ const SearchField = () => {
   const map = useMap();
   
   useEffect(() => {
-    // ArcGIS geocoder is professional-grade and excellent for businesses/POIs
-    const geocoder = L.Control.geocoder({
-      defaultMarkGeocode: false,
-      placeholder: 'Ej: Mega Centro, Sambil...',
-      errorMessage: 'No se encontró el lugar.',
-      geocoder: L.Control.Geocoder.arcgis()
-    })
-      .on('markgeocode', function(e) {
-        const latlng = e.geocode.center;
-        map.setView(latlng, 17);
-      })
-      .addTo(map);
+    const searchControl = Esri.geosearch({
+      position: 'topright',
+      placeholder: 'Busca un lugar o negocio (ej: Mega Centro)',
+      useMapBounds: false,
+      expanded: true,
+      collapseAfterResult: false,
+      providers: [
+        Esri.arcgisOnlineProvider({
+          countries: ['DOM'], // Focus strictly on DR
+          categories: ['Address', 'Business', 'POI']
+        })
+      ]
+    }).addTo(map);
+
+    searchControl.on('results', (data) => {
+      if (data.results.length > 0) {
+        const result = data.results[0];
+        map.setView(result.latlng, 17);
+      }
+    });
 
     return () => {
-      map.removeControl(geocoder);
+      map.removeControl(searchControl);
     };
   }, [map]);
 
