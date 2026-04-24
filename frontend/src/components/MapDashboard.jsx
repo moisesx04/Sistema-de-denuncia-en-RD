@@ -33,16 +33,69 @@ const MapDashboard = ({ reports = [], onReportHere, flyTarget }) => {
   const center = [18.4861, -69.9312];
 
   const icons = useMemo(() => {
-    const mk = (color) => new L.Icon({
-      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-      shadowUrl: markerShadow,
-      iconSize: [25, 41], iconAnchor: [12, 41],
-      popupAnchor: [1, -34], shadowSize: [41, 41],
+    const makeSvgIcon = (svgContent, color, size = 44) => L.divIcon({
+      className: '',
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size],
+      popupAnchor: [0, -size],
+      html: `
+        <div style="
+          width:${size}px; height:${size}px;
+          display:flex; align-items:center; justify-content:center;
+          background:${color}; border-radius:50% 50% 50% 4px;
+          border:3px solid rgba(255,255,255,0.9);
+          box-shadow:0 4px 12px rgba(0,0,0,0.30);
+          transform:rotate(0deg);
+          cursor:pointer;
+        ">
+          ${svgContent}
+        </div>`,
     });
+
+    // 🔵 Palo de Luz — blue street lamp
+    const lampSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="22" x2="12" y2="10"/>
+      <path d="M12 10 C12 10 12 4 18 4"/>
+      <line x1="18" y1="4" x2="18" y2="8"/>
+      <line x1="15" y1="8" x2="21" y2="8"/>
+      <circle cx="12" cy="22" r="1" fill="white"/>
+    </svg>`;
+
+    // 🟡 Hoyo — yellow pothole
+    const holeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+      <ellipse cx="13" cy="16" rx="9" ry="4.5" fill="rgba(0,0,0,0.55)"/>
+      <ellipse cx="13" cy="15" rx="7.5" ry="3.5" fill="#111"/>
+      <path d="M5 11 Q7 6 10 9 Q11 5 14 7.5 Q16 4 20 8 Q23 10 21 14" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>`;
+
+    // 🔴 Basura — red trash container
+    const trashSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"/>
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+      <path d="M10 11v6"/><path d="M14 11v6"/>
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+    </svg>`;
+
+    // 🟣 Carro Chatarra — purple wrecked car
+    const carSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 17H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1l2-4h10l2 4h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/>
+      <circle cx="7" cy="17" r="2" fill="white" stroke="white"/>
+      <circle cx="17" cy="17" r="2" fill="white" stroke="white"/>
+      <line x1="10" y1="9" x2="14" y2="13" stroke-width="2.5"/>
+      <line x1="14" y1="9" x2="10" y2="13" stroke-width="2.5"/>
+    </svg>`;
+
+    // 🟢 Resuelto — green check
+    const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>`;
+
     return {
-      Luminaria: mk('blue'), Hoyo: mk('orange'),
-      'Carro Chatarra': mk('violet'), Basura: mk('red'),
-      Resolved: mk('green'),
+      'Palo de Luz':    makeSvgIcon(lampSvg,  '#1d4ed8', 44),
+      Hoyo:             makeSvgIcon(holeSvg,  '#d97706', 44),
+      Basura:           makeSvgIcon(trashSvg, '#dc2626', 44),
+      'Carro Chatarra': makeSvgIcon(carSvg,   '#7c3aed', 44),
+      Resolved:         makeSvgIcon(checkSvg, '#16a34a', 40),
     };
   }, []);
 
@@ -88,7 +141,7 @@ const MapDashboard = ({ reports = [], onReportHere, flyTarget }) => {
           if (!r?.location?.lat || !r?.location?.lng) return null;
           const icon = r.status === 'Resuelto'
             ? icons.Resolved
-            : (icons[r.type] || icons.Luminaria);
+            : (icons[r.type] || icons['Palo de Luz']);
           const imgSrc = r.imageUrl?.startsWith('data:image')
             ? r.imageUrl
             : r.imageUrl ? `/uploads/${r.imageUrl}` : null;

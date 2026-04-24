@@ -21,10 +21,10 @@ exports.createReport = async (req, res) => {
 
         if (req.file) {
             try {
-                // Compress image buffer directly using sharp
+                // Compress aggressively: max 600px wide, 40% quality WebP → keeps base64 < ~60KB
                 const compressedBuffer = await sharp(req.file.buffer)
-                    .resize(800, null, { withoutEnlargement: true })
-                    .webp({ quality: 60 }) // Lower quality for base64 storage efficiency
+                    .resize(600, null, { withoutEnlargement: true })
+                    .webp({ quality: 40 })
                     .toBuffer();
                 
                 // Convert buffer to base64 string
