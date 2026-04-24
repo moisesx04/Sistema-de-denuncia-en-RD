@@ -13,18 +13,12 @@ const SearchField = () => {
   const map = useMap();
   
   useEffect(() => {
-    // Photon geocoder is usually better for fuzzy business search than Nominatim
+    // ArcGIS geocoder is professional-grade and excellent for businesses/POIs
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: false,
       placeholder: 'Ej: Mega Centro, Sambil...',
       errorMessage: 'No se encontró el lugar.',
-      geocoder: L.Control.Geocoder.photon({
-        geocodingQueryParams: {
-          // Approximate bounding box for Dominican Republic to prioritize local results
-          location: [18.7357, -70.1627], 
-          limit: 8
-        }
-      })
+      geocoder: L.Control.Geocoder.arcgis()
     })
       .on('markgeocode', function(e) {
         const latlng = e.geocode.center;
