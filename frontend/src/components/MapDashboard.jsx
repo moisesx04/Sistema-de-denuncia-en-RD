@@ -6,13 +6,14 @@ import L from 'leaflet';
 import * as Esri from 'esri-leaflet-geocoder';
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
 
-import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Trash2, Search, MapPin } from 'lucide-react';
+import { 
+  Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, 
+  PlusCircle, Truck, Trash2, Search, MapPin, Loader2 
+} from 'lucide-react';
 
 // Standard Leaflet Assets
 import 'leaflet/dist/leaflet.css';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-
-import { Search, MapPin, X, Loader2 } from 'lucide-react';
 
 const CustomSearchField = () => {
   const map = useMap();
