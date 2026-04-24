@@ -167,7 +167,7 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
   };
 
   return (
-    <div style={{ minHeight: '450px', height: '70vh', width: '100%', borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border-ui)', position: 'relative', boxShadow: var(--shadow-ui) }}>
+    <div style={{ minHeight: '450px', height: '70vh', width: '100%', borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border-ui)', position: 'relative', boxShadow: 'var(--shadow-ui)' }}>
       <MapContainer 
         key="rd-problems-map-vPremium"
         center={center} 
