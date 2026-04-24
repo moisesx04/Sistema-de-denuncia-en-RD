@@ -12,37 +12,104 @@ import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Tr
 import 'leaflet/dist/leaflet.css';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-const SearchField = () => {
+import { Search, MapPin, X, Loader2 } from 'lucide-react';
+
+const CustomSearchField = () => {
   const map = useMap();
-  
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
   useEffect(() => {
-    const searchControl = Esri.geosearch({
-      position: 'topright',
-      placeholder: 'Busca un lugar o negocio (ej: Mega Centro)',
-      useMapBounds: false,
-      expanded: true,
-      collapseAfterResult: false,
-      providers: [
-        Esri.arcgisOnlineProvider({
-          countries: ['DOM'], // Focus strictly on DR
-          categories: ['Address', 'Business', 'POI']
-        })
-      ]
-    }).addTo(map);
+    if (query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
 
-    searchControl.on('results', (data) => {
-      if (data.results.length > 0) {
-        const result = data.results[0];
-        map.setView(result.latlng, 17);
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${encodeURIComponent(query)}&f=json&location=-70.1627,18.7357&maxSuggestions=5&countryCode=DOM`);
+        const data = await res.json();
+        setSuggestions(data.suggestions || []);
+      } catch (err) {
+        console.error("Search error:", err);
+      } finally {
+        setLoading(false);
       }
-    });
+    }, 400);
 
-    return () => {
-      map.removeControl(searchControl);
-    };
-  }, [map]);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  return null;
+  const handleSelect = async (magicKey, text) => {
+    setQuery(text);
+    setSuggestions([]);
+    setShowResults(false);
+    try {
+      const res = await fetch(`https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?magicKey=${magicKey}&f=json&outFields=Addr_type,Match_addr,StAddr,City`);
+      const data = await res.json();
+      if (data.candidates && data.candidates.length > 0) {
+        const { x, y } = data.candidates[0].location;
+        map.setView([y, x], 17);
+      }
+    } catch (err) {
+      console.error("Select error:", err);
+    }
+  };
+
+  return (
+    <div style={{ 
+      position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)', 
+      zIndex: 2000, width: '90%', maxWidth: '450px' 
+    }}>
+      <div className="glass-card" style={{ 
+        display: 'flex', alignItems: 'center', padding: '8px 16px', 
+        background: 'rgba(15, 23, 42, 0.9)', border: '1px solid var(--border-ui)'
+      }}>
+        <Search size={20} color="var(--primary)" style={{ marginRight: '12px' }} />
+        <input 
+          type="text" 
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setShowResults(true); }}
+          placeholder="Busca negocios, plazas o calles..."
+          style={{ 
+            background: 'none', border: 'none', color: 'white', outline: 'none',
+            width: '100%', fontSize: '0.9rem', fontWeight: 500
+          }}
+        />
+        {loading ? <Loader2 size={18} className="animate-spin" color="var(--text-dim)" /> : 
+         query && <X size={18} color="var(--text-dim)" style={{ cursor: 'pointer' }} onClick={() => setQuery('')} />}
+      </div>
+
+      {showResults && suggestions.length > 0 && (
+        <div className="glass-card animate-fade" style={{ 
+          marginTop: '10px', overflow: 'hidden', padding: '8px',
+          background: 'rgba(15, 23, 42, 0.95)', border: '1px solid var(--border-ui)'
+        }}>
+          {suggestions.map((item, idx) => (
+            <div 
+              key={idx} 
+              onClick={() => handleSelect(item.magicKey, item.text)}
+              style={{ 
+                padding: '12px 16px', borderRadius: '12px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '12px', transition: '0.2s',
+                borderBottom: idx === suggestions.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.05)'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+              onMouseOut={(e) => e.currentTarget.style.background = 'none'}
+            >
+              <MapPin size={16} color="var(--primary)" />
+              <div style={{ fontSize: '0.85rem', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {item.text}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 function MapEventsHandler({ onMapClick }) {
@@ -53,10 +120,7 @@ function MapEventsHandler({ onMapClick }) {
       onMapClick([e.latlng.lat, e.latlng.lng]);
     };
     
-    // Fix for grey areas in map
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 400);
+    setTimeout(() => { map.invalidateSize(); }, 400);
 
     map.on('click', handleClick);
     return () => map.off('click', handleClick);
@@ -103,15 +167,15 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
   };
 
   return (
-    <div style={{ minHeight: '450px', height: '70vh', width: '100%', borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border-ui)', position: 'relative', boxShadow: 'var(--shadow-ui)' }}>
+    <div style={{ minHeight: '450px', height: '70vh', width: '100%', borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border-ui)', position: 'relative', boxShadow: var(--shadow-ui) }}>
       <MapContainer 
-        key="rd-problems-map-vFinal"
+        key="rd-problems-map-vPremium"
         center={center} 
         zoom={13} 
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: '100%', width: '100%', background: '#0f172a' }}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <SearchField />
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+        <CustomSearchField />
         <MapEventsHandler onMapClick={setClickedPos} />
 
         {Array.isArray(reports) && reports.map((report) => {

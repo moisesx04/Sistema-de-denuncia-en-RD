@@ -63,30 +63,31 @@ function App() {
 
       {/* Modern Sidebar / Navbar */}
       <nav style={{
-        background: '#ffffff',
+        background: 'rgba(15, 23, 42, 0.8)',
+        backdropFilter: 'blur(15px)',
         borderBottom: '1px solid var(--border-ui)',
         position: 'sticky', top: 0, zIndex: 1000,
-        padding: '0.6rem 0'
+        padding: '0.8rem 0'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{
-            width: '42px', height: '42px', borderRadius: '12px',
-            background: 'var(--primary)',
+            width: '42px', height: '42px', borderRadius: '14px',
+            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(6, 182, 212, 0.3)'
+            boxShadow: '0 8px 20px rgba(6, 182, 212, 0.3)'
           }}>
             <ShieldCheck size={26} color="white" />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.5px', lineHeight: 1 }}>
+            <h1 style={{ fontSize: '1.2rem', fontWeight: 900, color: 'white', letterSpacing: '-0.5px', lineHeight: 1 }}>
               PROBLEMAS RD
             </h1>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 600 }}>MONITOREO CIUDADANO</span>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 700, letterSpacing: '0.1em' }}>SISTEMA PRO</span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '1.5rem', background: '#f1f5f9', padding: '0.4rem', borderRadius: '14px' }}>
+        <div style={{ display: 'flex', gap: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
           {[
             { id: 'map', icon: <MapIcon size={18} />, label: 'Mapa' },
             { id: 'list', icon: <List size={18} />, label: 'Reportes' },
@@ -96,17 +97,17 @@ function App() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               style={{ 
-                background: activeTab === tab.id ? 'white' : 'transparent', 
+                background: activeTab === tab.id ? 'var(--primary)' : 'transparent', 
                 border: 'none', 
-                color: activeTab === tab.id ? 'var(--primary)' : 'var(--text-dim)',
-                padding: '0.5rem 1rem', borderRadius: '10px',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                color: activeTab === tab.id ? 'white' : 'var(--text-dim)',
+                padding: '0.6rem 1.2rem', borderRadius: '14px',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.6rem', 
                 fontWeight: 700, fontSize: '0.85rem',
-                boxShadow: activeTab === tab.id ? '0 2px 6px rgba(0,0,0,0.05)' : 'none',
-                transition: '0.2s'
+                transition: '0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: activeTab === tab.id ? '0 4px 15px rgba(6, 182, 212, 0.3)' : 'none'
               }}
             >
-              {tab.icon} {tab.label}
+              {tab.icon} <span className="hide-mobile">{tab.label}</span>
             </button>
           ))}
         </div>
@@ -211,38 +212,39 @@ function App() {
       {/* Footer Premium */}
       <footer style={{ 
         marginTop: '2rem', 
-        padding: '3rem 1.5rem', 
+        padding: '4rem 1.5rem', 
         textAlign: 'center', 
-        background: '#f8fafc',
-        borderTop: '1px solid #e2e8f0'
+        background: 'rgba(15, 23, 42, 0.95)',
+        borderTop: '1px solid var(--border-ui)'
       }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <p style={{ 
-            fontSize: '0.9rem', 
-            fontWeight: 800, 
-            color: '#1e293b',
-            letterSpacing: '0.1em',
+            fontSize: '1rem', 
+            fontWeight: 900, 
+            color: 'white',
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
             marginBottom: '0.5rem'
           }}>
-            Desarrollado con Excelencia por Moises Cuevas
+            Desarrollado por Moises Cuevas
           </p>
-          <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '1.5rem' }}>
-            Innovación y Monitoreo Ciudadano para la República Dominicana
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)', marginBottom: '2rem' }}>
+            Innovación y Tecnología para la Gestión Urbana en República Dominicana
           </p>
           <div style={{ 
             display: 'flex', 
             justifyContent: 'center', 
             gap: '1.5rem',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid #cbd5e1',
-            fontSize: '0.7rem',
-            color: '#94a3b8',
-            fontWeight: 600
+            paddingTop: '2rem',
+            borderTop: '1px solid rgba(255,255,255,0.05)',
+            fontSize: '0.75rem',
+            color: 'rgba(255,255,255,0.3)',
+            fontWeight: 600,
+            letterSpacing: '0.05em'
           }}>
-            <span>&copy; {new Date().getFullYear()} RD REPORTES</span>
+            <span>&copy; {new Date().getFullYear()} PROBLEMAS RD</span>
             <span>•</span>
-            <span>SISTEMA DE DENUNCIA URBANA</span>
+            <span>SISTEMA DE DENUNCIA PRO</span>
           </div>
         </div>
       </footer>
