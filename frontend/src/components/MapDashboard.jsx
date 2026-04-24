@@ -1,11 +1,36 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Trash2 } from 'lucide-react';
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
+import 'leaflet-control-geocoder';
+import { Lightbulb, AlertTriangle, Eye, Map as MapIcon, X, PlusCircle, Truck, Trash2, Search } from 'lucide-react';
 
 // Standard Leaflet Assets
 import 'leaflet/dist/leaflet.css';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+const SearchField = () => {
+  const map = useMap();
+  
+  useEffect(() => {
+    const geocoder = L.Control.geocoder({
+      defaultMarkGeocode: false,
+      placeholder: 'Buscar dirección...',
+      errorMessage: 'No se encontró el lugar.'
+    })
+      .on('markgeocode', function(e) {
+        const latlng = e.geocode.center;
+        map.setView(latlng, 16);
+      })
+      .addTo(map);
+
+    return () => {
+      map.removeControl(geocoder);
+    };
+  }, [map]);
+
+  return null;
+};
 
 function MapEventsHandler({ onMapClick }) {
   const map = useMap();
@@ -73,7 +98,7 @@ const MapDashboard = ({ reports = [], onReportHere }) => {
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        
+        <SearchField />
         <MapEventsHandler onMapClick={setClickedPos} />
 
         {Array.isArray(reports) && reports.map((report) => {
