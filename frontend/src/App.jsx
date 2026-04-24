@@ -194,25 +194,34 @@ function App() {
 
         <div style={{
           maxWidth: '1200px', margin: '0 auto',
-          padding: '0 1rem', display: 'flex',
-          justifyContent: 'space-between', alignItems: 'center',
-          height: '64px', minWidth: 0,
+          padding: '0 0.75rem',
+          display: 'flex',
+          flexWrap: 'nowrap',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '56px',
+          gap: '8px',
+          minWidth: 0,
         }}>
           {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, minWidth: 0 }}>
             <div style={{
-              width: '40px', height: '40px', borderRadius: '12px',
+              width: '34px', height: '34px', borderRadius: '10px', flexShrink: 0,
               background: 'var(--accent)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(206,17,38,0.40)',
+              boxShadow: '0 4px 10px rgba(206,17,38,0.40)',
             }}>
-              <ShieldCheck size={22} color="white" />
+              <ShieldCheck size={18} color="white" />
             </div>
-            <div>
-              <h1 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', lineHeight: 1, letterSpacing: '-0.3px' }}>
+            <div style={{ minWidth: 0 }}>
+              <h1 style={{
+                fontSize: '0.95rem', fontWeight: 900, color: '#fff',
+                lineHeight: 1, letterSpacing: '-0.2px',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              }}>
                 PROBLEMAS RD
               </h1>
-              <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.65)', fontWeight: 600, letterSpacing: '0.08em' }}>
+              <span style={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.60)', fontWeight: 600, letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
                 SISTEMA CIUDADANO
               </span>
             </div>
@@ -220,22 +229,24 @@ function App() {
 
           {/* Tabs */}
           <div style={{
-            display: 'flex', gap: '4px',
-            background: 'rgba(255,255,255,0.10)', padding: '4px',
-            borderRadius: '16px',
+            display: 'flex', gap: '2px', flexShrink: 0,
+            background: 'rgba(255,255,255,0.10)', padding: '3px',
+            borderRadius: '14px',
           }}>
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
+                title={tab.label}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '6px',
-                  padding: '0.5rem 1rem', borderRadius: '12px',
-                  border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.83rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
+                  padding: '0.45rem 0.65rem', borderRadius: '10px',
+                  border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem',
                   background: activeTab === tab.id ? '#fff' : 'transparent',
                   color:      activeTab === tab.id ? 'var(--primary)' : 'rgba(255,255,255,0.8)',
                   transition: '0.2s',
                   boxShadow:  activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.15)' : 'none',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {tab.icon} <span className="hide-mobile">{tab.label}</span>
@@ -244,16 +255,18 @@ function App() {
           </div>
 
           {/* CTA */}
-          <button className="btn-primary"
+          <button
+            className="btn-primary"
             onClick={() => { setPrefilledLocation(null); setShowForm(true); }}
+            style={{ flexShrink: 0, padding: '0.55rem 0.9rem', borderRadius: '12px' }}
           >
-            <Plus size={18} /> <span className="hide-mobile">Nuevo Reporte</span>
+            <Plus size={16} /> <span className="hide-mobile">Nuevo Reporte</span>
           </button>
         </div>
       </nav>
 
       {/* ── Main ── */}
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.5rem 1rem' }}>
 
         {/* DASHBOARD */}
         {activeTab === 'dashboard' && (
