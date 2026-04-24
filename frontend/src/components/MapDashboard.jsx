@@ -138,7 +138,10 @@ const MapDashboard = ({ reports = [], onReportHere, flyTarget }) => {
 
         {/* report markers */}
         {Array.isArray(reports) && reports.map((r) => {
-          if (!r?.location?.lat || !r?.location?.lng) return null;
+          // Only skip if there is truly no location data stored
+          if (r?.location?.lat == null || r?.location?.lng == null) return null;
+          // Also skip if both are exactly 0 (no location was set)
+          if (r.location.lat === 0 && r.location.lng === 0) return null;
           const icon = r.status === 'Resuelto'
             ? icons.Resolved
             : (icons[r.type] || icons['Palo de Luz']);
