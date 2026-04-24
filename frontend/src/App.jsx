@@ -256,10 +256,10 @@ function App() {
           background: 'rgba(15, 23, 42, 0.6)', zIndex: 2000, display: 'flex',
           alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)'
         }}>
-          <div className="glass-card animate-fade" style={{ maxWidth: '500px', width: '95%', position: 'relative', padding: '2.5rem', background: 'white' }}>
+          <div className="glass-card animate-fade" style={{ maxWidth: '500px', width: '95%', position: 'relative', padding: '2.5rem', background: 'rgba(15, 23, 42, 0.95)', border: '1px solid var(--border-ui)' }}>
             <button 
               onClick={() => setShowForm(false)}
-              style={{ position: 'absolute', top: '1.2rem', right: '1.2rem', background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ position: 'absolute', top: '1.2rem', right: '1.2rem', background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}
             >
               <X size={18} />
             </button>
